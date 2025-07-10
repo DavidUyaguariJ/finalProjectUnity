@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
         posicionInicial = transform.position;
         if (uiManager != null)
         {
+            GetComponent<Renderer>().material.color = Color.black;
             uiManager.ActualizarVidas(vidas);
         }
 
