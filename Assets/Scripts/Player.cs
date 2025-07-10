@@ -25,12 +25,15 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         posicionInicial = transform.position;
+
+        // Cambiar color del jugador al inicio
+        GetComponent<Renderer>().material.color = Color.black;
+
+        // Mostrar vidas en UI
         if (uiManager != null)
         {
-            GetComponent<Renderer>().material.color = Color.black;
             uiManager.ActualizarVidas(vidas);
         }
-
     }
 
     void Update()
@@ -51,7 +54,7 @@ public class Player : MonoBehaviour
             rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
         }
 
-        // Ajuste de salto rápido
+        // Ajuste de salto
         if (rb.velocity.y < 0)
         {
             rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
@@ -61,7 +64,7 @@ public class Player : MonoBehaviour
             rb.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
 
-        // Verificar si cayó
+        // Verificar caída
         if (transform.position.y < -55f)
         {
             PerderVida();
@@ -71,6 +74,7 @@ public class Player : MonoBehaviour
     void PerderVida()
     {
         vidas--;
+
         if (uiManager != null)
         {
             uiManager.ActualizarVidas(vidas);
@@ -78,13 +82,11 @@ public class Player : MonoBehaviour
 
         if (vidas > 0)
         {
-            // Reaparece en posición inicial
             transform.position = posicionInicial;
             rb.velocity = Vector3.zero;
         }
         else
         {
-            // Reinicia escena
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
@@ -95,10 +97,20 @@ public class Player : MonoBehaviour
         {
             isGrounded = true;
         }
+
+        if (collision.gameObject.CompareTag("PlataformaMovil"))
+        {
+            transform.parent = collision.transform;
+        }
     }
 
     void OnCollisionExit(Collision collision)
     {
         isGrounded = false;
+
+        if (collision.gameObject.CompareTag("PlataformaMovil"))
+        {
+            transform.parent = null;
+        }
     }
 }

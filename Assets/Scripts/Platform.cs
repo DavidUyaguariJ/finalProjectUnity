@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -9,31 +8,33 @@ public class Platform : MonoBehaviour
     public GameObject rampa;
     public Transform posicionEsfera;
     public float tiempoBajada = 10f;
+    public float duracionMovimiento = 1f;
+
     private bool jugadorCerca = false;
     private bool rampaActiva = false;
     private Vector3 posicionInicialRampa;
 
-    void Start()
+    private void Start()
     {
         textoInteraccion.text = "";
         posicionInicialRampa = rampa.transform.position;
     }
 
-    void Update()
+    private void Update()
     {
         if (jugadorCerca && !rampaActiva)
         {
-            textoInteraccion.text = "Presiona E para bajar rampa";
+            textoInteraccion.text = "Presiona E para bajar la rampa";
 
             if (Input.GetKeyDown(KeyCode.E))
             {
                 if (GameManager.instancia.puntuacion >= 4)
                 {
-                    StartCoroutine(BajarRampa());
+                    StartCoroutine(BajarYSubirRampa());
                 }
                 else
                 {
-                    StartCoroutine(MostrarMensajeTemporal("Necesitas al menos 5 puntos"));
+                    StartCoroutine(MostrarMensajeTemporal("Necesitas al menos 4 orbes"));
                 }
             }
         }
@@ -56,22 +57,41 @@ public class Platform : MonoBehaviour
         }
     }
 
-    private IEnumerator BajarRampa()
+    private IEnumerator BajarYSubirRampa()
     {
         rampaActiva = true;
         textoInteraccion.text = "";
 
-        rampa.transform.position = new Vector3(
+        Vector3 posicionBajada = new Vector3(
             rampa.transform.position.x,
-            posicionEsfera.position.y,
+            posicionEsfera.position.y-5f,
             rampa.transform.position.z
         );
 
+        // Bajar suavemente
+        yield return StartCoroutine(MoverRampa(rampa.transform.position, posicionBajada));
+
+        // Esperar abajo
         yield return new WaitForSeconds(tiempoBajada);
 
-        rampa.transform.position = posicionInicialRampa;
+        // Subir suavemente
+        yield return StartCoroutine(MoverRampa(rampa.transform.position, posicionInicialRampa));
 
         rampaActiva = false;
+    }
+
+    private IEnumerator MoverRampa(Vector3 desde, Vector3 hasta)
+    {
+        float tiempo = 0f;
+
+        while (tiempo < duracionMovimiento)
+        {
+            rampa.transform.position = Vector3.Lerp(desde, hasta, tiempo / duracionMovimiento);
+            tiempo += Time.deltaTime;
+            yield return null;
+        }
+
+        rampa.transform.position = hasta;
     }
 
     private IEnumerator MostrarMensajeTemporal(string mensaje)

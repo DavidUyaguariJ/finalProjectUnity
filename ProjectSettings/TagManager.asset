@@ -3,12 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - PlataformaMovil
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PlataformaMovil
   - Water
   - UI
   - 
