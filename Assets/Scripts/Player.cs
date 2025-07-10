@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
         GetComponent<Renderer>().material.color = Color.black;
     }
 
-    public float velocidad = 5f;
+    public float velocidad = 10f;
 
     void Update()
     {
