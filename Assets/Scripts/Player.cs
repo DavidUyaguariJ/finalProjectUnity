@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
@@ -11,17 +12,22 @@ public class Player : MonoBehaviour
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
 
+    [Header("Sistema de vidas")]
+    public int vidas = 3;
+    private Vector3 posicionInicial;
+
     private Rigidbody rb;
     private bool isGrounded = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        posicionInicial = transform.position;
     }
 
     void Update()
     {
-        // Movimiento WASD
+        // Movimiento
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
         Vector3 move = new Vector3(moveX, 0f, moveZ) * moveSpeed;
@@ -37,7 +43,7 @@ public class Player : MonoBehaviour
             rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
         }
 
-        // Aumentar gravedad si está cayendo o suelta salto
+        // Ajuste de salto rápido
         if (rb.velocity.y < 0)
         {
             rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
@@ -46,11 +52,32 @@ public class Player : MonoBehaviour
         {
             rb.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
+
+        // Verificar si cayó
+        if (transform.position.y < -55f)
+        {
+            PerderVida();
+        }
+    }
+
+    void PerderVida()
+    {
+        vidas--;
+        if (vidas > 0)
+        {
+            // Reaparece en posición inicial
+            transform.position = posicionInicial;
+            rb.velocity = Vector3.zero;
+        }
+        else
+        {
+            // Reinicia escena
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        // Verifica si está tocando el suelo (por el ángulo)
         if (collision.contacts[0].normal.y > 0.5f)
         {
             isGrounded = true;
