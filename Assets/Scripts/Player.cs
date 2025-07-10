@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    private float _gravity = -9.81f;
+    public float velocidad = 30f;
+    [SerializeField] private float gravityMultiplier = 3.0f;
+
     void Start()
     {
         GetComponent<Renderer>().material.color = Color.black;
     }
 
-    public float velocidad = 10f;
 
     void Update()
     {
