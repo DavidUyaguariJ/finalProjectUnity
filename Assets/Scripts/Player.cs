@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
 {
+    public UIManager uiManager;  // lo conectarás desde el Inspector
+
     [Header("Movimiento")]
     public float moveSpeed = 5f;
 
@@ -23,6 +25,11 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         posicionInicial = transform.position;
+        if (uiManager != null)
+        {
+            uiManager.ActualizarVidas(vidas);
+        }
+
     }
 
     void Update()
@@ -63,6 +70,11 @@ public class Player : MonoBehaviour
     void PerderVida()
     {
         vidas--;
+        if (uiManager != null)
+        {
+            uiManager.ActualizarVidas(vidas);
+        }
+
         if (vidas > 0)
         {
             // Reaparece en posición inicial
