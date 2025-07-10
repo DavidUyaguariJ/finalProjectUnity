@@ -27,7 +27,7 @@ public class Platform : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.E))
             {
-                if (GameManager.instancia.puntuacion >= 5)
+                if (GameManager.instancia.puntuacion >= 4)
                 {
                     StartCoroutine(BajarRampa());
                 }
@@ -61,7 +61,6 @@ public class Platform : MonoBehaviour
         rampaActiva = true;
         textoInteraccion.text = "";
 
-        // Bajar rampa a la posición del jugador
         rampa.transform.position = new Vector3(
             rampa.transform.position.x,
             posicionEsfera.position.y,
@@ -70,7 +69,6 @@ public class Platform : MonoBehaviour
 
         yield return new WaitForSeconds(tiempoBajada);
 
-        // Subir rampa a su posición original
         rampa.transform.position = posicionInicialRampa;
 
         rampaActiva = false;
