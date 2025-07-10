@@ -1,0 +1,54 @@
+# Archivos y carpetas generadas por Unity
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+
+# Configuración personal de usuarios
+UserSettings/
+.vs/
+.vscode/
+
+# Archivos de compilación
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+
+# Archivos relacionados a paquetes
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Archivos de crash y análisis
+sysinfo.txt
+
+# Unity Cache
+UnityCache/
+*.apk
+*.aab
+
+# Archivos ocultos de git
+*.orig
+
+# Backup de escenas y prefabs
+*.bak
+
+# Archivos temporales de exportación
+ExportedObj/
+*.unitypackage
